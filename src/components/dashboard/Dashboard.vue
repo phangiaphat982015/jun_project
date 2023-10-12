@@ -12,27 +12,15 @@
           v-for="(item, i) in items"
           :key="i"
           :prepend-icon="item.icon"
+          append-icon="null"
           no-action
           click
         >
           <template v-slot:activator>
-            <v-list-item>
+            <v-list-item @click="changRoute(item.route)">
               <v-list-item-title v-text="item.title"></v-list-item-title
             ></v-list-item>
           </template>
-
-          <v-list-group color="primary">
-            <v-list-item
-              v-if="item.items"
-              v-for="(subItem, index) in item.items"
-              :key="index"
-              @click="changRoute(subItem.route)"
-            >
-              <v-list-item>
-                <v-list-item-title>{{ subItem.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list-item>
-          </v-list-group>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -56,26 +44,34 @@ export default {
     items() {
       return [
         {
-          icon: "mdi-home",
-          title: "Trang chủ",
+          icon: "mdi-package",
+          title: "Sản phẩm",
           show: true,
+          route: "/products",
         },
         {
-          icon: "mdi-database",
-          title: "Dữ liệu đầu vào",
+          icon: "mdi-calculator",
+          title: "Đơn vị tính",
           show: true,
-          items: [
-            {
-              title: "Quản lý đơn hàng",
-              route: "admin_orders",
-              show: true,
-            },
-            {
-              title: "Nguồn đơn hàng",
-              route: "admin_sources",
-              show: true,
-            },
-          ],
+          route: "/units",
+        },
+        {
+          icon: "mdi-cash",
+          title: "Bảng giá",
+          show: true,
+          route: "/price-list",
+        },
+        {
+          icon: "mdi-account-group",
+          title: "Khách hàng",
+          show: true,
+          route: "/customers",
+        },
+        {
+          icon: "mdi-account-cowboy-hat",
+          title: "Nhân viên",
+          show: true,
+          route: "/employees",
         },
       ];
     },
@@ -87,7 +83,14 @@ export default {
   mounted() {},
 
   methods: {
-    changRoute(name) {},
+    changRoute(name) {
+      this.$router.push(name);
+    },
+
+    toggleRender() {
+      if (this.$router.name === "dashboard") return false;
+      return false;
+    },
   },
 };
 </script>
