@@ -1,9 +1,18 @@
 <template>
-  <v-app>
-    <Dashboard />
-  </v-app>
+	<v-app>
+		<div class="v-wrapper">
+			<h2>asdkaodksao</h2>
+		</div>
+
+	</v-app>
 </template>
 
 <script setup>
-import Dashboard from "@/components/dashboard/Dashboard.vue";
+
+
 </script>
+<style scoped>
+.v-wrapper {
+	display: flex;
+}
+</style>
