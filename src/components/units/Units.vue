@@ -82,6 +82,8 @@
 import { VDataTable } from "vuetify/labs/VDataTable";
 
 export default {
+  name: "Units",
+
   components: {
     VDataTable,
   },

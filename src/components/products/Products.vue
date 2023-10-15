@@ -88,6 +88,8 @@
 import { VDataTable } from "vuetify/labs/VDataTable";
 
 export default {
+  name: "Products",
+
   components: {
     VDataTable,
   },

@@ -1,41 +1,35 @@
-// Composables
 import { createRouter, createWebHistory } from "vue-router";
+import Products from "@/components/products/Products";
+import Units from "@/components/units/Units";
+import PriceList from "@/components/price-list/PriceList";
+import Customers from "@/components/customers/Customers";
+import Employees from "@/components/employees/Employees";
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: () => import("@/views/pages/login/Login.vue"),
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: () => import("@/views/pages/dashboard/Dashboard.vue"),
-  },
-  {
     path: "/products",
     name: "products",
-    component: () => import("@/components/products/Products.vue"),
+    component: Products,
   },
   {
     path: "/units",
     name: "units",
-    component: () => import("@/components/units/Units.vue"),
+    component: Units,
   },
   {
     path: "/price-list",
     name: "price-list",
-    component: () => import("@/components/price-list/PriceList.vue"),
+    component: PriceList,
   },
   {
     path: "/customers",
     name: "customers",
-    component: () => import("@/components/customers/Customers.vue"),
+    component: Customers,
   },
   {
     path: "/employees",
     name: "employees",
-    component: () => import("@/components/employees/Employees.vue"),
+    component: Employees,
   },
 ];
 
