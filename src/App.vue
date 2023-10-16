@@ -7,30 +7,42 @@
 
       <v-divider></v-divider>
 
-      <v-list>
-        <v-list-group
-          v-for="(item, i) in items"
-          :key="i"
-          :prepend-icon="item.icon"
-          append-icon="null"
-          no-action
-          click
-        >
-          <template v-slot:activator>
-            <v-list-item @click="changRoute(item.route)">
-              <v-list-item-title v-text="item.title"></v-list-item-title
-            ></v-list-item>
-          </template>
-        </v-list-group>
-      </v-list>
+      <v-menu v-for="item in items">
+        <template v-slot:activator="{ props }">
+          <v-list-item
+            v-if="!item.route"
+            :prepend-icon="item.icon"
+            :link="true"
+          >
+            <v-list-item-title v-bind="props">{{
+              item.title
+            }}</v-list-item-title></v-list-item
+          >
+          <v-list-item
+            v-else
+            :to="item.route"
+            :prepend-icon="item.icon"
+            :link="true"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title></v-list-item
+          >
+        </template>
+        <v-list v-if="item.subItems">
+          <v-list-item
+            v-for="(subItem, index) in item.subItems"
+            :key="index"
+            @click="changRoute(subItem.route)"
+          >
+            <v-list-item-title>{{ subItem.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-navigation-drawer>
     <v-main> <router-view /></v-main>
   </v-app>
 </template>
 <script>
 export default {
-  name: "Dashboard",
-
   data: () => ({
     breadcrumbs: [],
     mini: true,
@@ -44,34 +56,42 @@ export default {
     items() {
       return [
         {
-          icon: "mdi-package",
-          title: "Sản phẩm",
+          icon: "mdi-home-variant-outline",
+          title: "Trang chủ",
           show: true,
-          route: "/products",
+          route: "/dashboard",
         },
         {
-          icon: "mdi-calculator",
-          title: "Đơn vị tính",
+          icon: "mdi-database-outline",
+          title: "Dữ liệu đầu vào",
           show: true,
-          route: "/units",
-        },
-        {
-          icon: "mdi-cash",
-          title: "Bảng giá",
-          show: true,
-          route: "/price-list",
-        },
-        {
-          icon: "mdi-account-group",
-          title: "Khách hàng",
-          show: true,
-          route: "/customers",
-        },
-        {
-          icon: "mdi-account-cowboy-hat",
-          title: "Nhân viên",
-          show: true,
-          route: "/employees",
+          subItems: [
+            {
+              title: "Sản phẩm",
+              show: true,
+              route: "/products",
+            },
+            {
+              title: "Đơn vị tính",
+              show: true,
+              route: "/units",
+            },
+            {
+              title: "Bảng giá",
+              show: true,
+              route: "/price-list",
+            },
+            {
+              title: "Khách hàng",
+              show: true,
+              route: "/customers",
+            },
+            {
+              title: "Nhân viên",
+              show: true,
+              route: "/employees",
+            },
+          ],
         },
       ];
     },

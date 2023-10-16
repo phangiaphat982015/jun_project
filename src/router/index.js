@@ -4,8 +4,14 @@ import Units from "@/components/units/Units";
 import PriceList from "@/components/price-list/PriceList";
 import Customers from "@/components/customers/Customers";
 import Employees from "@/components/employees/Employees";
+import Dashboard from "@/components/dashboard/Dashboard";
 
 const routes = [
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: Dashboard,
+  },
   {
     path: "/products",
     name: "products",

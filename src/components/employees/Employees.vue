@@ -1,13 +1,29 @@
 <template>
   <v-app
-    ><v-main class="container align-center px-1">
-      <h2 class="font-weight-light mb-2">Quản lý Nhân viên</h2>
-      <v-card>
+    ><v-main class="container align-center">
+      <v-list-item>
+        <v-list-item></v-list-item>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list-item>
+        <div class="d-flex my-5">
+          <v-list-item>
+            <h2 class="font-weight-light">Nhân viên</h2>
+          </v-list-item>
+          <v-btn color="primary" dark class="-3" v-on:click="dialog = !dialog">
+            Tạo mới
+            <v-icon small>mdi-plus-circle-outline</v-icon>
+          </v-btn>
+        </div>
+      </v-list-item>
+      <v-card class="mx-7">
         <v-data-table
           :headers="headers"
           :items="items"
           mobile-breakpoint="800"
-          class="elevation-0"
+          class="elevation-0 py-3"
         >
           <template v-slot:item.actions="{ item }">
             <div class="text-truncate">
@@ -26,19 +42,6 @@
           </template>
         </v-data-table>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <div class="d-flex">
-              <v-btn
-                color="primary"
-                dark
-                class="ml-auto ma-3"
-                v-on:click="dialog = !dialog"
-              >
-                Tạo mới
-                <v-icon small>mdi-plus-circle-outline</v-icon>
-              </v-btn>
-            </div>
-          </template>
           <v-card>
             <v-card-title>
               <span v-if="editedItem.id"
@@ -52,18 +55,21 @@
                   <v-text-field
                     v-model="editedItem.name"
                     label="Tên"
+                    variant="outlined"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12">
                   <v-text-field
                     v-model="editedItem.position"
                     label="Chức vụ"
+                    variant="outlined"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12">
                   <v-text-field
                     v-model="editedItem.phone"
                     label="Số điện thoại"
+                    variant="outlined"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -97,11 +103,11 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Id", value: "id" },
-        { text: "Tên", value: "name" },
-        { text: "Chức vụ", value: "position" },
-        { text: "Số điện thoại", value: "phone", name: "category" },
-        { text: "Action", value: "actions" },
+        { title: "Id", key: "id" },
+        { title: "Tên", key: "name" },
+        { title: "Chức vụ", key: "position" },
+        { title: "Số điện thoại", key: "phone" },
+        { title: "Action", key: "actions" },
       ],
       items: [
         {
