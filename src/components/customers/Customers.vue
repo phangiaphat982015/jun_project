@@ -8,14 +8,30 @@
       <v-divider></v-divider>
 
       <v-list-item>
-        <div class="d-flex my-5">
-          <v-list-item>
-            <h2 class="font-weight-light">Khách hàng</h2>
-          </v-list-item>
-          <v-btn color="primary" dark class="-3" v-on:click="dialog = !dialog">
-            Tạo mới
-            <v-icon small>mdi-plus-circle-outline</v-icon>
-          </v-btn>
+        <div class="d-flex align-center justify-space-between my-5">
+          <div class="d-flex">
+            <v-list-item>
+              <h2 class="font-weight-light">Khách hàng</h2>
+            </v-list-item>
+            <v-btn
+              color="primary"
+              dark
+              class="-3"
+              v-on:click="dialog = !dialog"
+            >
+              Tạo mới
+              <v-icon small>mdi-plus-circle-outline</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-flex">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              variant="outlined"
+              class="search-text-field"
+            ></v-text-field>
+          </div>
         </div>
       </v-list-item>
       <v-card class="mx-7">
@@ -24,6 +40,7 @@
           :items="items"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
+          :search="search"
         >
           <template v-slot:item.actions="{ item }">
             <div class="text-truncate">
@@ -51,6 +68,13 @@
             </v-card-title>
             <v-card-text>
               <v-row>
+                <v-col cols="12" sm="12">
+                  <v-text-field
+                    v-model="editedItem.id"
+                    label="Mã khách hàng"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
                 <v-col cols="12" sm="12">
                   <v-text-field
                     v-model="editedItem.name"
@@ -102,43 +126,62 @@ export default {
 
   data() {
     return {
+      search: "",
       headers: [
-        { title: "Id", key: "id" },
+        { title: "Mã khách hàng", key: "id" },
         { title: "Tên", key: "name" },
         { title: "Địa chỉ", key: "address" },
         { title: "Số điện thoại", key: "phone" },
-        { title: "Action", key: "actions" },
+        { title: "Tuỳ chọn", key: "actions" },
       ],
       items: [
         {
-          id: "1",
-          name: "khách hàng 1",
-          address: "địa chỉ 1",
-          phone: "số điện thoại 1",
+          id: "KHACHHANG 1",
+          name: "KHACH 1",
+          address: "DIACHI 1",
+          phone: "SDT 1",
         },
         {
-          id: "2",
-          name: "khách hàng 2",
-          address: "địa chỉ 2",
-          phone: "số điện thoại 2",
+          id: "KHACHHANG 2",
+          name: "KHACH 2",
+          address: "DIACHI 2",
+          phone: "SDT 2",
         },
         {
-          id: "3",
-          name: "khách hàng 3",
-          address: "địa chỉ 3",
-          phone: "số điện thoại 3",
+          id: "KHACHHANG 3",
+          name: "KHACH 3",
+          address: "DIACHI 3",
+          phone: "SDT 3",
         },
         {
-          id: "4",
-          name: "khách hàng 4",
-          address: "địa chỉ 4",
-          phone: "số điện thoại 4",
+          id: "KHACHHANG 4",
+          name: "KHACH 4",
+          address: "DIACHI 4",
+          phone: "SDT 4",
         },
         {
-          id: "5",
-          name: "khách hàng 5",
-          address: "địa chỉ 5",
-          phone: "số điện thoại 5",
+          id: "KHACHHANG 5",
+          name: "KHACH 5",
+          address: "DIACHI 5",
+          phone: "SDT 5",
+        },
+        {
+          id: "KHACHHANG 6",
+          name: "KHACH 6",
+          address: "DIACHI 6",
+          phone: "SDT 6",
+        },
+        {
+          id: "KHACHHANG 7",
+          name: "KHACH 7",
+          address: "DIACHI 7",
+          phone: "SDT 7",
+        },
+        {
+          id: "KHACHHANG 8",
+          name: "KHACH 8",
+          address: "DIACHI 8",
+          phone: "SDT 8",
         },
       ],
       dialog: false,
@@ -186,3 +229,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-text-field {
+  width: 400px;
+}
+</style>

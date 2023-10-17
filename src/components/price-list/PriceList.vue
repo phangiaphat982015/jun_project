@@ -8,14 +8,30 @@
       <v-divider></v-divider>
 
       <v-list-item>
-        <div class="d-flex my-5">
-          <v-list-item>
-            <h2 class="font-weight-light">Bảng giá</h2>
-          </v-list-item>
-          <v-btn color="primary" dark class="-3" v-on:click="dialog = !dialog">
-            Tạo mới
-            <v-icon small>mdi-plus-circle-outline</v-icon>
-          </v-btn>
+        <div class="d-flex align-center justify-space-between my-5">
+          <div class="d-flex">
+            <v-list-item>
+              <h2 class="font-weight-light">Bảng giá</h2>
+            </v-list-item>
+            <v-btn
+              color="primary"
+              dark
+              class="-3"
+              v-on:click="dialog = !dialog"
+            >
+              Tạo mới
+              <v-icon small>mdi-plus-circle-outline</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-flex">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              variant="outlined"
+              class="search-text-field"
+            ></v-text-field>
+          </div>
         </div>
       </v-list-item>
       <v-card class="mx-7">
@@ -24,6 +40,7 @@
           :items="items"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
+          :search="search"
         >
           <template v-slot:item.actions="{ item }">
             <div class="text-truncate">
@@ -53,8 +70,15 @@
               <v-row>
                 <v-col cols="12" sm="12">
                   <v-text-field
-                    v-model="editedItem.name"
-                    label="Tên"
+                    v-model="editedItem.id"
+                    label="Mã bảng giá"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12">
+                  <v-text-field
+                    v-model="editedItem.price"
+                    label="Giá"
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
@@ -95,37 +119,23 @@ export default {
 
   data() {
     return {
+      search: "",
       headers: [
-        { title: "Id", key: "id" },
-        { title: "Tên", key: "name" },
+        { title: "Mã bảng giá", key: "id" },
+        { title: "Giá", key: "price" },
         { title: "Mô tả", key: "description" },
-        { title: "Action", key: "actions" },
+        { title: "Tuỳ chọn", key: "actions" },
       ],
       items: [
         {
-          id: "1",
-          name: "đơn vị 1",
-          description: "mô tả 1",
+          id: "BANGGIA1",
+          price: "100000",
+          description: "BANGGIA1",
         },
         {
-          id: "2",
-          name: "đơn vị 2",
-          description: "mô tả 2",
-        },
-        {
-          id: "3",
-          name: "đơn vị 3",
-          description: "mô tả 3",
-        },
-        {
-          id: "4",
-          name: "đơn vị 4",
-          description: "mô tả 4",
-        },
-        {
-          id: "5",
-          name: "đơn vị 5",
-          description: "mô tả 5",
+          id: "BANGGIA2",
+          price: "200000",
+          description: "BANGGIA2",
         },
       ],
       dialog: false,
@@ -173,3 +183,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-text-field {
+  width: 400px;
+}
+</style>

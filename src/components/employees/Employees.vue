@@ -8,14 +8,30 @@
       <v-divider></v-divider>
 
       <v-list-item>
-        <div class="d-flex my-5">
-          <v-list-item>
-            <h2 class="font-weight-light">Nhân viên</h2>
-          </v-list-item>
-          <v-btn color="primary" dark class="-3" v-on:click="dialog = !dialog">
-            Tạo mới
-            <v-icon small>mdi-plus-circle-outline</v-icon>
-          </v-btn>
+        <div class="d-flex align-center justify-space-between my-5">
+          <div class="d-flex">
+            <v-list-item>
+              <h2 class="font-weight-light">Nhân viên</h2>
+            </v-list-item>
+            <v-btn
+              color="primary"
+              dark
+              class="-3"
+              v-on:click="dialog = !dialog"
+            >
+              Tạo mới
+              <v-icon small>mdi-plus-circle-outline</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-flex">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              variant="outlined"
+              class="search-text-field"
+            ></v-text-field>
+          </div>
         </div>
       </v-list-item>
       <v-card class="mx-7">
@@ -24,6 +40,7 @@
           :items="items"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
+          :search="search"
         >
           <template v-slot:item.actions="{ item }">
             <div class="text-truncate">
@@ -51,6 +68,13 @@
             </v-card-title>
             <v-card-text>
               <v-row>
+                <v-col cols="12" sm="12">
+                  <v-text-field
+                    v-model="editedItem.id"
+                    label="Mã nhân viên"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
                 <v-col cols="12" sm="12">
                   <v-text-field
                     v-model="editedItem.name"
@@ -102,43 +126,62 @@ export default {
 
   data() {
     return {
+      search: "",
       headers: [
-        { title: "Id", key: "id" },
+        { title: "Mã nhân viên", key: "id" },
         { title: "Tên", key: "name" },
         { title: "Chức vụ", key: "position" },
         { title: "Số điện thoại", key: "phone" },
-        { title: "Action", key: "actions" },
+        { title: "Tuỳ chọn", key: "actions" },
       ],
       items: [
         {
-          id: "1",
-          name: "nhân viên 1",
-          position: "chức vụ 1",
-          phone: "số điện thoại 1",
+          id: "NHANVIEN 1",
+          name: "NHANVIEN 1",
+          position: "CHUCVU 1",
+          phone: "SDT 1",
         },
         {
-          id: "2",
-          name: "nhân viên 2",
-          position: "chức vụ 2",
-          phone: "số điện thoại 2",
+          id: "NHANVIEN 2",
+          name: "NHANVIEN 2",
+          position: "CHUCVU 2",
+          phone: "SDT 2",
         },
         {
-          id: "3",
-          name: "nhân viên 3",
-          position: "chức vụ 3",
-          phone: "số điện thoại 3",
+          id: "NHANVIEN 3",
+          name: "NHANVIEN 3",
+          position: "CHUCVU 3",
+          phone: "SDT 3",
         },
         {
-          id: "4",
-          name: "nhân viên 4",
-          position: "chức vụ 4",
-          phone: "số điện thoại 4",
+          id: "NHANVIEN 4",
+          name: "NHANVIEN 4",
+          position: "CHUCVU 4",
+          phone: "SDT 4",
         },
         {
-          id: "5",
-          name: "nhân viên 5",
-          position: "chức vụ 5",
-          phone: "số điện thoại 5",
+          id: "NHANVIEN 5",
+          name: "NHANVIEN 5",
+          position: "CHUCVU 5",
+          phone: "SDT 5",
+        },
+        {
+          id: "NHANVIEN 6",
+          name: "NHANVIEN 6",
+          position: "CHUCVU 6",
+          phone: "SDT 6",
+        },
+        {
+          id: "NHANVIEN 7",
+          name: "NHANVIEN 7",
+          position: "CHUCVU 7",
+          phone: "SDT 7",
+        },
+        {
+          id: "NHANVIEN 8",
+          name: "NHANVIEN 8",
+          position: "CHUCVU 8",
+          phone: "SDT 8",
         },
       ],
       dialog: false,
@@ -186,3 +229,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-text-field {
+  width: 400px;
+}
+</style>
