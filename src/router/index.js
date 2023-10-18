@@ -5,6 +5,7 @@ import PriceList from "@/components/price-list/PriceList";
 import Customers from "@/components/customers/Customers";
 import Employees from "@/components/employees/Employees";
 import Dashboard from "@/components/dashboard/Dashboard";
+import Locations from "@/components/locations/Locations";
 
 const routes = [
   {
@@ -21,6 +22,11 @@ const routes = [
     path: "/units",
     name: "units",
     component: Units,
+  },
+  {
+    path: "/locations",
+    name: "locations",
+    component: Locations,
   },
   {
     path: "/price-list",

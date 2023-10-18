@@ -77,6 +77,11 @@ export default {
               route: "/units",
             },
             {
+              title: "Vị trí địa lý",
+              show: true,
+              route: "/locations",
+            },
+            {
               title: "Bảng giá",
               show: true,
               route: "/price-list",
