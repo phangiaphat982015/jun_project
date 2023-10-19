@@ -177,6 +177,7 @@ export default {
     console.log(authenCookie);
     if (authenCookie) {
       this.isLoggedIn = true;
+      this.$router.push("/dashboard");
     } else {
       this.isLoggedIn = false;
     }
@@ -198,12 +199,14 @@ export default {
         this.isLoggedIn = true;
         this.username = "";
         this.password = "";
+        this.$router.push("/dashboard");
       }
     },
 
     logout() {
       this.cookies.remove("authenCookie");
       this.isLoggedIn = false;
+      this.$router.push("/");
     },
   },
 };
