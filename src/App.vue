@@ -1,8 +1,41 @@
 <template>
-  <v-app id="inspire">
+  <template v-if="!isLoggedIn">
+    <div class="d-flex align-center justify-center" style="height: 100vh">
+      <v-sheet width="400" class="mx-auto">
+        <v-form fast-fail @submit.prevent="login">
+          <v-text-field
+            variant="outlined"
+            v-model="username"
+            label="User Name"
+          ></v-text-field>
+
+          <v-text-field
+            variant="outlined"
+            v-model="password"
+            label="Password"
+          ></v-text-field>
+          <v-btn type="submit" color="primary" block class="mt-2"
+            >Đăng nhập</v-btn
+          >
+        </v-form>
+      </v-sheet>
+    </div>
+  </template>
+  <v-app v-else id="inspire">
     <v-navigation-drawer fixed expand-on-hover permanent app v-model="drawer">
       <v-list-item>
-        <v-list-item> SeaShop </v-list-item>
+        <div class="d-flex align-center justify-space-between">
+          <div class="d-flex">
+            <v-list-item>
+              <h2 class="font-weight-light">SeaShop</h2>
+            </v-list-item>
+          </div>
+          <div class="d-flex">
+            <v-btn color="error" @click="logout()"
+              ><v-icon>mdi-logout</v-icon></v-btn
+            >
+          </div>
+        </div>
       </v-list-item>
 
       <v-divider></v-divider>
@@ -42,7 +75,14 @@
   </v-app>
 </template>
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
+
   data: () => ({
     breadcrumbs: [],
     mini: true,
@@ -50,6 +90,9 @@ export default {
     menuActive: 1,
     subActive: null,
     fab: false,
+    isLoggedIn: false,
+    username: "",
+    password: "",
   }),
 
   computed: {
@@ -110,7 +153,15 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    let authenCookie = this.cookies.get("authenCookie");
+    console.log(authenCookie);
+    if (authenCookie) {
+      this.isLoggedIn = true;
+    } else {
+      this.isLoggedIn = false;
+    }
+  },
 
   methods: {
     changRoute(name) {
@@ -120,6 +171,20 @@ export default {
     toggleRender() {
       if (this.$router.name === "dashboard") return false;
       return false;
+    },
+
+    login() {
+      if (this.username === "admin" && this.password === "admin") {
+        this.cookies.set("authenCookie", "logged in");
+        this.isLoggedIn = true;
+        this.username = "";
+        this.password = "";
+      }
+    },
+
+    logout() {
+      this.cookies.remove("authenCookie");
+      this.isLoggedIn = false;
     },
   },
 };
