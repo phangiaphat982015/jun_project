@@ -147,9 +147,9 @@ export default {
               route: "/customers",
             },
             {
-              title: "mdi-warehouse",
+              title: "Nhân viên",
               show: true,
-              route: "/warehouse",
+              route: "/employees",
             },
           ],
         },
