@@ -140,11 +140,23 @@ export default {
               route: "/customers",
             },
             {
-              title: "Nhân viên",
+              title: "mdi-warehouse",
               show: true,
-              route: "/employees",
+              route: "/warehouse",
             },
           ],
+        },
+        {
+          icon: "mdi-ticket-percent-outline",
+          title: "Khuyến mãi",
+          show: true,
+          route: "/coupons",
+        },
+        {
+          icon: "mdi-warehouse",
+          title: "Kho",
+          show: true,
+          route: "/warehouse",
         },
       ];
     },
