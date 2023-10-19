@@ -22,7 +22,14 @@
     </div>
   </template>
   <v-app v-else id="inspire">
-    <v-navigation-drawer fixed expand-on-hover permanent app v-model="drawer">
+    <v-navigation-drawer
+      color="#E0E0E0"
+      fixed
+      expand-on-hover
+      permanent
+      app
+      v-model="drawer"
+    >
       <v-list-item>
         <div class="d-flex align-center justify-space-between">
           <div class="d-flex">
