@@ -70,13 +70,6 @@
               <v-row>
                 <v-col cols="12" sm="12">
                   <v-text-field
-                    v-model="editedItem.id"
-                    label="Mã bảng giá"
-                    variant="outlined"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12">
-                  <v-text-field
                     v-model="editedItem.price"
                     label="Giá"
                     variant="outlined"

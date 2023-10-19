@@ -70,13 +70,6 @@
               <v-row>
                 <v-col cols="12" sm="12">
                   <v-text-field
-                    v-model="editedItem.id"
-                    label="Mã khách hàng"
-                    variant="outlined"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12">
-                  <v-text-field
                     v-model="editedItem.name"
                     label="Tên"
                     variant="outlined"

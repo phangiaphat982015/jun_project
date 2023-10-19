@@ -70,15 +70,15 @@
               <v-row>
                 <v-col cols="12" sm="12">
                   <v-text-field
-                    v-model="editedItem.id"
-                    label="Mã đơn vị"
+                    v-model="editedItem.name"
+                    label="Tên đơn vị"
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12">
                   <v-text-field
-                    v-model="editedItem.name"
-                    label="Tên đơn vị"
+                    v-model="editedItem.description"
+                    label="Mô tả"
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
@@ -116,16 +116,19 @@ export default {
       headers: [
         { title: "Mã đơn vị", key: "id" },
         { title: "Tên đơn vị", key: "name" },
+        { title: "Mô tả", key: "description" },
         { title: "Tuỳ chọn", key: "actions" },
       ],
       items: [
         {
-          id: "LON",
-          name: "lon",
+          id: "1",
+          name: "LON",
+          description: "lon",
         },
         {
-          id: "THUNG24",
-          name: "thùng 24 lon",
+          id: "2",
+          name: "THUNG24",
+          description: "thùng 24 lon",
         },
       ],
       dialog: false,
