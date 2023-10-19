@@ -6,6 +6,7 @@ import Customers from "@/components/customers/Customers";
 import Employees from "@/components/employees/Employees";
 import Dashboard from "@/components/dashboard/Dashboard";
 import Locations from "@/components/locations/Locations";
+import Categories from "@/components/categories/Categories";
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: "/locations",
     name: "locations",
     component: Locations,
+  },
+  {
+    path: "/categories",
+    name: "categories",
+    component: Categories,
   },
   {
     path: "/price-list",

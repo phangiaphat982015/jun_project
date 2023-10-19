@@ -82,6 +82,11 @@ export default {
               route: "/locations",
             },
             {
+              title: "Loại sản phẩm",
+              show: true,
+              route: "/categories",
+            },
+            {
               title: "Bảng giá",
               show: true,
               route: "/price-list",
