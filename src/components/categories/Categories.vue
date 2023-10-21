@@ -68,19 +68,31 @@
             </v-card-title>
             <v-card-text>
               <v-row>
-                <v-col cols="12" sm="12">
+                <v-col cols="12">
                   <v-text-field
                     v-model="editedItem.code"
                     label="Mã"
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12">
+                <v-col cols="12">
                   <v-text-field
                     v-model="editedItem.name"
                     label="Tên"
                     variant="outlined"
                   ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                    label="Trực thuộc"
+                    v-model="editedItem.parent"
+                    :items="items"
+                    item-title="name"
+                    item-value="id"
+                    chips
+                    multiple
+                    variant="outlined"
+                  ></v-select>
                 </v-col>
               </v-row>
             </v-card-text>
