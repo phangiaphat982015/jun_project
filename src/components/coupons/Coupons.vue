@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getCoupons"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -110,6 +110,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getCoupons() {
+      return this.$store.getters.couponList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -118,23 +124,6 @@ export default {
         { title: "Mã", key: "code" },
         { title: "Mô tả", key: "description" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "1",
-          code: "CT1",
-          description: "Chuong trinh 1",
-        },
-        {
-          id: "2",
-          code: "CT2",
-          description: "Chuong trinh 2",
-        },
-        {
-          id: "3",
-          code: "CT3",
-          description: "Chuong trinh 3",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -150,32 +139,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editCoupon", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addCoupon", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteCoupon", item.id);
       }
     },
   },

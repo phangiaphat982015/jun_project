@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getLocations"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -117,6 +117,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getLocations() {
+      return this.$store.getters.locationList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -126,38 +132,6 @@ export default {
         { title: "Quận / Huyện", key: "district" },
         { title: "Phường / Xã", key: "ward" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "1",
-          city: "TPHCM",
-          district: "QUAN 11",
-          ward: "PHUONG 1",
-        },
-        {
-          id: "1",
-          city: "TPHCM",
-          district: "QUAN 11",
-          ward: "PHUONG 2",
-        },
-        {
-          id: "1",
-          city: "TPHCM",
-          district: "QUAN 11",
-          ward: "PHUONG 3",
-        },
-        {
-          id: "1",
-          city: "TPHCM",
-          district: "QUAN 11",
-          ward: "PHUONG 4",
-        },
-        {
-          id: "1",
-          city: "TPHCM",
-          district: "QUAN 11",
-          ward: "PHUONG 5",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -173,32 +147,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editLocation", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addLocation", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteLocation", item.id);
       }
     },
   },

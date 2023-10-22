@@ -1,82 +1,94 @@
 <template>
   <template v-if="!isLoggedIn">
-    <div class="d-flex align-center justify-center" style="height: 100vh">
-      <v-sheet width="400" class="mx-auto">
-        <v-form fast-fail @submit.prevent="login">
-          <v-text-field
-            variant="outlined"
-            v-model="username"
-            label="User Name"
-          ></v-text-field>
+    <div
+      class="d-flex align-center justify-center flex-column"
+      style="height: 100vh"
+    >
+      <div class="d-flex">
+        <v-img :width="300" cover src="./assets/main_logo.png"></v-img>
+      </div>
+      <div class="d-flex">
+        <v-sheet width="400" class="mx-auto">
+          <v-form fast-fail @submit.prevent="login">
+            <v-text-field
+              variant="outlined"
+              v-model="username"
+              label="User Name"
+            ></v-text-field>
 
-          <v-text-field
-            variant="outlined"
-            v-model="password"
-            label="Password"
-          ></v-text-field>
-          <v-btn type="submit" color="primary" block class="mt-2"
-            >Đăng nhập</v-btn
-          >
-        </v-form>
-      </v-sheet>
+            <v-text-field
+              variant="outlined"
+              v-model="password"
+              label="Password"
+              type="password"
+            ></v-text-field>
+            <div class="d-flex justify-center">
+              <v-btn type="submit" color="#E0F2F1" class="mt-2"
+                >Đăng nhập</v-btn
+              >
+            </div>
+          </v-form>
+        </v-sheet>
+      </div>
     </div>
   </template>
   <v-app v-else id="inspire">
     <v-navigation-drawer
-      color="#E0E0E0"
+      color="#E0F2F1"
       fixed
       expand-on-hover
       permanent
       app
       v-model="drawer"
     >
-      <v-list-item>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex">
-            <v-list-item>
-              <h2 class="font-weight-light">SeaShop</h2>
-            </v-list-item>
-          </div>
-          <div class="d-flex">
-            <v-btn color="error" @click="logout()"
-              ><v-icon>mdi-logout</v-icon></v-btn
-            >
-          </div>
-        </div>
+      <v-list-item class="d-flex justify-center align-center">
+        <v-img :width="160" cover src="./assets/menu_logo.png"></v-img>
       </v-list-item>
 
       <v-divider></v-divider>
 
-      <v-menu v-for="item in items">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-if="!item.route"
-            :prepend-icon="item.icon"
-            :link="true"
+      <v-list>
+        <v-list-group v-for="item in items" :value="item.title">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-if="!item.subItems"
+              v-bind="props"
+              :prepend-icon="item.icon"
+              :append-icon="null"
+              :title="item.title"
+              @click="changRoute(item.route)"
+            ></v-list-item>
+
+            <v-list-item
+              v-else
+              v-bind="props"
+              :prepend-icon="item.icon"
+              :title="item.title"
+            ></v-list-item>
+          </template>
+
+          <v-list-group v-for="subItem in item.subItems" :value="subItem.title">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                @click="changRoute(subItem.route)"
+                v-bind="props"
+                :append-icon="null"
+                :title="subItem.title"
+              ></v-list-item>
+            </template>
+          </v-list-group>
+        </v-list-group>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <div class="d-flex align-center justify-space-between flex-column py-5">
+        <div class="d-flex">
+          <v-btn color="error" @click="logout()"
+            >ĐĂNG XUẤT<v-icon class="mx-2">mdi-logout</v-icon></v-btn
           >
-            <v-list-item-title v-bind="props">{{
-              item.title
-            }}</v-list-item-title></v-list-item
-          >
-          <v-list-item
-            v-else
-            :to="item.route"
-            :prepend-icon="item.icon"
-            :link="true"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title></v-list-item
-          >
-        </template>
-        <v-list v-if="item.subItems">
-          <v-list-item
-            v-for="(subItem, index) in item.subItems"
-            :key="index"
-            @click="changRoute(subItem.route)"
-          >
-            <v-list-item-title>{{ subItem.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        </div>
+      </div>
     </v-navigation-drawer>
     <v-main> <router-view /></v-main>
   </v-app>
@@ -113,7 +125,7 @@ export default {
         },
         {
           icon: "mdi-database-outline",
-          title: "Dữ liệu đầu vào",
+          title: "Dữ liệu",
           show: true,
           subItems: [
             {
@@ -174,7 +186,6 @@ export default {
 
   mounted() {
     let authenCookie = this.cookies.get("authenCookie");
-    console.log(authenCookie);
     if (authenCookie) {
       this.isLoggedIn = true;
       this.$router.push("/dashboard");

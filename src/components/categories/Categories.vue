@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getCategories"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -122,6 +122,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getCategories() {
+      return this.$store.getters.categoryList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -130,23 +136,6 @@ export default {
         { title: "Mã", key: "code" },
         { title: "Tên", key: "name" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "1",
-          code: "TP",
-          name: "Thuc pham",
-        },
-        {
-          id: "2",
-          code: "HP",
-          name: "Hoa pham",
-        },
-        {
-          id: "3",
-          code: "CSCN",
-          name: "Cham soc ca nhan",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -162,32 +151,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editCategory", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addCategory", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteCategory", item.id);
       }
     },
   },
