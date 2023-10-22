@@ -311,9 +311,17 @@ const store = createStore({
       return state.categoryList;
     },
 
+    getCategoryById: (state) => (id) => {
+      return state.categoryList.find((item) => item.id === id);
+    },
+
     // Coupon
     couponList: (state) => {
       return state.couponList;
+    },
+
+    getCouponById: (state) => (id) => {
+      return state.couponList.find((item) => item.id === id);
     },
 
     // Customer
@@ -321,9 +329,17 @@ const store = createStore({
       return state.customerList;
     },
 
+    getCustomerById: (state) => (id) => {
+      return state.customerList.find((item) => item.id === id);
+    },
+
     // Employee
     employeeList: (state) => {
       return state.employeeList;
+    },
+
+    getEmployeeById: (state) => (id) => {
+      return state.employeeList.find((item) => item.id === id);
     },
 
     // Location
@@ -331,9 +347,17 @@ const store = createStore({
       return state.locationList;
     },
 
+    getLocationById: (state) => (id) => {
+      return state.locationList.find((item) => item.id === id);
+    },
+
     // Price list
     priceList: (state) => {
       return state.priceList;
+    },
+
+    getPriceListById: (state) => (id) => {
+      return state.priceList.find((item) => item.id === id);
     },
 
     // Product
@@ -341,14 +365,26 @@ const store = createStore({
       return state.productList;
     },
 
+    getProductById: (state) => (id) => {
+      return state.productList.find((item) => item.id === id);
+    },
+
     // Unit
     unitList: (state) => {
       return state.unitList;
     },
 
+    getUnitById: (state) => (id) => {
+      return state.unitList.find((item) => item.id === id);
+    },
+
     // Warehouse
     warehouseList: (state) => {
       return state.warehouseList;
+    },
+
+    getWarehouseById: (state) => (id) => {
+      return state.warehouseList.find((item) => item.id === id);
     },
   },
 
