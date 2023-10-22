@@ -174,7 +174,6 @@ export default {
 
   mounted() {
     let authenCookie = this.cookies.get("authenCookie");
-    console.log(authenCookie);
     if (authenCookie) {
       this.isLoggedIn = true;
       this.$router.push("/dashboard");
