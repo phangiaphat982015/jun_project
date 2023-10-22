@@ -1,24 +1,35 @@
 <template>
   <template v-if="!isLoggedIn">
-    <div class="d-flex align-center justify-center" style="height: 100vh">
-      <v-sheet width="400" class="mx-auto">
-        <v-form fast-fail @submit.prevent="login">
-          <v-text-field
-            variant="outlined"
-            v-model="username"
-            label="User Name"
-          ></v-text-field>
+    <div
+      class="d-flex align-center justify-center flex-column"
+      style="height: 100vh"
+    >
+      <div class="d-flex">
+        <v-img :width="300" cover src="./assets/main_logo.png"></v-img>
+      </div>
+      <div class="d-flex">
+        <v-sheet width="400" class="mx-auto">
+          <v-form fast-fail @submit.prevent="login">
+            <v-text-field
+              variant="outlined"
+              v-model="username"
+              label="User Name"
+            ></v-text-field>
 
-          <v-text-field
-            variant="outlined"
-            v-model="password"
-            label="Password"
-          ></v-text-field>
-          <v-btn type="submit" color="primary" block class="mt-2"
-            >Đăng nhập</v-btn
-          >
-        </v-form>
-      </v-sheet>
+            <v-text-field
+              variant="outlined"
+              v-model="password"
+              label="Password"
+              type="password"
+            ></v-text-field>
+            <div class="d-flex justify-center">
+              <v-btn type="submit" color="primary" class="mt-2"
+                >Đăng nhập</v-btn
+              >
+            </div>
+          </v-form>
+        </v-sheet>
+      </div>
     </div>
   </template>
   <v-app v-else id="inspire">
@@ -30,19 +41,8 @@
       app
       v-model="drawer"
     >
-      <v-list-item>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex">
-            <v-list-item>
-              <h2 class="font-weight-light">SeaShop</h2>
-            </v-list-item>
-          </div>
-          <div class="d-flex">
-            <v-btn color="error" @click="logout()"
-              ><v-icon>mdi-logout</v-icon></v-btn
-            >
-          </div>
-        </div>
+      <v-list-item class="d-flex justify-center align-center">
+        <v-img :width="160" cover src="./assets/menu_logo.png"></v-img>
       </v-list-item>
 
       <v-divider></v-divider>
@@ -77,6 +77,14 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <div class="d-flex align-center justify-space-between flex-column py-5">
+        <div class="d-flex">
+          <v-btn color="error" @click="logout()"
+            >ĐĂNG XUẤT<v-icon class="mx-2">mdi-logout</v-icon></v-btn
+          >
+        </div>
+      </div>
     </v-navigation-drawer>
     <v-main> <router-view /></v-main>
   </v-app>
