@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getCustomers"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -117,6 +117,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getCustomers() {
+      return this.$store.getters.customerList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -126,56 +132,6 @@ export default {
         { title: "Địa chỉ", key: "address" },
         { title: "Số điện thoại", key: "phone" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "KHACHHANG 1",
-          name: "KHACH 1",
-          address: "DIACHI 1",
-          phone: "SDT 1",
-        },
-        {
-          id: "KHACHHANG 2",
-          name: "KHACH 2",
-          address: "DIACHI 2",
-          phone: "SDT 2",
-        },
-        {
-          id: "KHACHHANG 3",
-          name: "KHACH 3",
-          address: "DIACHI 3",
-          phone: "SDT 3",
-        },
-        {
-          id: "KHACHHANG 4",
-          name: "KHACH 4",
-          address: "DIACHI 4",
-          phone: "SDT 4",
-        },
-        {
-          id: "KHACHHANG 5",
-          name: "KHACH 5",
-          address: "DIACHI 5",
-          phone: "SDT 5",
-        },
-        {
-          id: "KHACHHANG 6",
-          name: "KHACH 6",
-          address: "DIACHI 6",
-          phone: "SDT 6",
-        },
-        {
-          id: "KHACHHANG 7",
-          name: "KHACH 7",
-          address: "DIACHI 7",
-          phone: "SDT 7",
-        },
-        {
-          id: "KHACHHANG 8",
-          name: "KHACH 8",
-          address: "DIACHI 8",
-          phone: "SDT 8",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -191,32 +147,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editCustomer", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addCustomer", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteCustomer", item.id);
       }
     },
   },

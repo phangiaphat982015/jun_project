@@ -326,6 +326,11 @@ const store = createStore({
       return state.employeeList;
     },
 
+    // Location
+    locationList: (state) => {
+      return state.locationList;
+    },
+
     // Price list
     priceList: (state) => {
       return state.priceList;
@@ -444,6 +449,30 @@ const store = createStore({
       items[foundIndex] = item;
     },
 
+    // Location
+    deleteLocation(state, id) {
+      const index = state.locationList
+        .map((x) => {
+          return x.id;
+        })
+        .indexOf(id);
+      state.locationList.splice(index, 1);
+    },
+
+    addLocation(state, obj) {
+      const location = {
+        id: (state.locationList.length + 1).toString(),
+        ...obj,
+      };
+      state.locationList.push(location);
+    },
+
+    editLocation(state, item) {
+      const items = state.locationList;
+      var foundIndex = items.findIndex((x) => x.id == item.id);
+      items[foundIndex] = item;
+    },
+
     // Price list
     deletePriceList(state, id) {
       const index = state.priceList
@@ -526,7 +555,7 @@ const store = createStore({
       state.warehouseList.splice(index, 1);
     },
 
-    addUnit(state, obj) {
+    addWarehouse(state, obj) {
       const warehouse = {
         id: (state.warehouseList.length + 1).toString(),
         ...obj,
@@ -534,7 +563,7 @@ const store = createStore({
       state.warehouseList.push(warehouse);
     },
 
-    editUnit(state, item) {
+    editWarehouse(state, item) {
       const items = state.warehouseList;
       var foundIndex = items.findIndex((x) => x.id == item.id);
       items[foundIndex] = item;

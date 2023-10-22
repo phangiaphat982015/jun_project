@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getPriceList"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -110,6 +110,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getPriceList() {
+      return this.$store.getters.priceList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -118,18 +124,6 @@ export default {
         { title: "Giá", key: "price" },
         { title: "Mô tả", key: "description" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "BANGGIA1",
-          price: "100000",
-          description: "BANGGIA1",
-        },
-        {
-          id: "BANGGIA2",
-          price: "200000",
-          description: "BANGGIA2",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -145,32 +139,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editPriceList", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addPriceList", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deletePriceList", item.id);
       }
     },
   },

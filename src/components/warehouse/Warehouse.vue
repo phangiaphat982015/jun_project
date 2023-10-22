@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getWarehouses"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -117,6 +117,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getWarehouses() {
+      return this.$store.getters.warehouseList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -126,26 +132,6 @@ export default {
         { title: "Tên", key: "name" },
         { title: "Mô tả", key: "description" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "1",
-          code: "VP1",
-          name: "Vat pham 1",
-          description: "Vat pham 1",
-        },
-        {
-          id: "2",
-          code: "VP2",
-          name: "Vat pham 2",
-          description: "Vat pham 2",
-        },
-        {
-          id: "3",
-          code: "CT3",
-          name: "Chuong trinh 3",
-          description: "Chuong trinh 1",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -161,32 +147,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editWarehouse", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addWarehouse", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteWarehouse", item.id);
       }
     },
   },

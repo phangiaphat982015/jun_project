@@ -37,7 +37,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="getEmployees"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -117,6 +117,12 @@ export default {
     VDataTable,
   },
 
+  computed: {
+    getEmployees() {
+      return this.$store.getters.employeeList;
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -126,56 +132,6 @@ export default {
         { title: "Chức vụ", key: "position" },
         { title: "Số điện thoại", key: "phone" },
         { title: "Tuỳ chọn", key: "actions" },
-      ],
-      items: [
-        {
-          id: "NHANVIEN 1",
-          name: "NHANVIEN 1",
-          position: "CHUCVU 1",
-          phone: "SDT 1",
-        },
-        {
-          id: "NHANVIEN 2",
-          name: "NHANVIEN 2",
-          position: "CHUCVU 2",
-          phone: "SDT 2",
-        },
-        {
-          id: "NHANVIEN 3",
-          name: "NHANVIEN 3",
-          position: "CHUCVU 3",
-          phone: "SDT 3",
-        },
-        {
-          id: "NHANVIEN 4",
-          name: "NHANVIEN 4",
-          position: "CHUCVU 4",
-          phone: "SDT 4",
-        },
-        {
-          id: "NHANVIEN 5",
-          name: "NHANVIEN 5",
-          position: "CHUCVU 5",
-          phone: "SDT 5",
-        },
-        {
-          id: "NHANVIEN 6",
-          name: "NHANVIEN 6",
-          position: "CHUCVU 6",
-          phone: "SDT 6",
-        },
-        {
-          id: "NHANVIEN 7",
-          name: "NHANVIEN 7",
-          position: "CHUCVU 7",
-          phone: "SDT 7",
-        },
-        {
-          id: "NHANVIEN 8",
-          name: "NHANVIEN 8",
-          position: "CHUCVU 8",
-          phone: "SDT 8",
-        },
       ],
       dialog: false,
       editedItem: {},
@@ -191,32 +147,17 @@ export default {
       const id = item.id;
 
       if (id) {
-        const existingItemIndex = this.items.findIndex(
-          (existing) => existing.id === id
-        );
-        if (existingItemIndex !== -1) {
-          this.items[existingItemIndex] = {
-            ...this.items[existingItemIndex],
-            ...item,
-          };
-        }
+        this.$store.commit("editEmployee", item);
       } else {
-        const newId = (this.items.length + 1).toString();
-        const newItem = { id: newId, ...item };
-        this.items.push(newItem);
+        this.$store.commit("addEmployee", item);
       }
 
       this.editedItem = {};
       this.dialog = false;
     },
     deleteItem(item) {
-      const index = this.items.findIndex(
-        (existingItem) => existingItem.id === item.id
-      );
-      if (index !== -1) {
-        if (confirm("Bạn có thực sự muốn xoá?")) {
-          this.items.splice(index, 1);
-        }
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        this.$store.commit("deleteEmployee", item.id);
       }
     },
   },
