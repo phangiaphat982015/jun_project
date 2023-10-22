@@ -14,21 +14,21 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="12">
+            <v-col cols="12">
               <v-text-field
                 v-model="editedItem.name"
                 label="Tên"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="12">
               <v-text-field
                 v-model="editedItem.position"
                 label="Chức vụ"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="12">
               <v-text-field
                 v-model="editedItem.phone"
                 label="Số điện thoại"

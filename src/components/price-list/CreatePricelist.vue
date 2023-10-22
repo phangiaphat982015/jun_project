@@ -14,19 +14,19 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="12">
+            <v-col cols="12">
               <v-text-field
                 v-model="editedItem.price"
                 label="Giá"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
-              <v-text-field
+            <v-col cols="12">
+              <v-textarea
                 v-model="editedItem.description"
                 label="Mô tả"
                 variant="outlined"
-              ></v-text-field>
+              ></v-textarea>
             </v-col>
           </v-row>
         </v-card-text>

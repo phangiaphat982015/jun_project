@@ -31,8 +31,8 @@
             <v-col cols="12">
               <v-select
                 label="Trực thuộc"
-                v-model="editedItem.parent"
-                :items="items"
+                v-model="editedItem.parents"
+                :items="categories"
                 item-title="name"
                 item-value="id"
                 chips
@@ -60,15 +60,21 @@ export default {
     return {
       editedItem: {},
       itemId: null,
+      categories: [],
     };
   },
 
   created() {
     this.itemId = this.$route.params.id;
     this.initData();
+    this.getCategories();
   },
 
   methods: {
+    getCategories() {
+      this.categories = this.$store.getters.categoryList;
+    },
+
     initData() {
       if (this.itemId) {
         this.editedItem = this.$store.getters.getCategoryById(this.itemId);

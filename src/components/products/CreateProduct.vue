@@ -14,40 +14,64 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="12">
+            <v-col cols="6">
               <v-text-field
                 v-model="editedItem.name"
                 label="Tên sản phẩm"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="6">
               <v-text-field
                 v-model="editedItem.type"
                 label="Loại sản phẩm"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="6">
               <v-text-field
                 v-model="editedItem.unit"
                 label="Đơn vị cơ bản"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="6">
               <v-text-field
                 v-model="editedItem.url"
                 label="Hình ảnh minh hoạ"
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
-              <v-text-field
+            <v-col cols="6">
+              <v-select
+                label="Loại sản phẩm"
+                v-model="editedItem.categories"
+                :items="categories"
+                item-title="name"
+                item-value="id"
+                chips
+                multiple
+                variant="outlined"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                label="Đơn vị"
+                v-model="editedItem.units"
+                :items="units"
+                item-title="name"
+                item-value="id"
+                chips
+                multiple
+                variant="outlined"
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-textarea
                 v-model="editedItem.description"
                 label="Mô tả"
                 variant="outlined"
-              ></v-text-field>
+              ></v-textarea>
             </v-col>
           </v-row>
         </v-card-text>
@@ -69,15 +93,27 @@ export default {
     return {
       editedItem: {},
       itemId: null,
+      categories: [],
+      units: [],
     };
   },
 
   created() {
     this.itemId = this.$route.params.id;
     this.initData();
+    this.getCategories();
+    this.getUnits();
   },
 
   methods: {
+    getCategories() {
+      this.categories = this.$store.getters.categoryList;
+    },
+
+    getUnits() {
+      this.units = this.$store.getters.unitList;
+    },
+
     initData() {
       if (this.itemId) {
         this.editedItem = this.$store.getters.getProductById(this.itemId);
