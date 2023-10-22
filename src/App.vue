@@ -23,7 +23,7 @@
               type="password"
             ></v-text-field>
             <div class="d-flex justify-center">
-              <v-btn type="submit" color="primary" class="mt-2"
+              <v-btn type="submit" color="#E0F2F1" class="mt-2"
                 >Đăng nhập</v-btn
               >
             </div>
