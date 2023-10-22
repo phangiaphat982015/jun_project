@@ -34,7 +34,7 @@
   </template>
   <v-app v-else id="inspire">
     <v-navigation-drawer
-      color="#E0E0E0"
+      color="#E0F2F1"
       fixed
       expand-on-hover
       permanent
@@ -47,36 +47,40 @@
 
       <v-divider></v-divider>
 
-      <v-menu v-for="item in items">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-if="!item.route"
-            :prepend-icon="item.icon"
-            :link="true"
-          >
-            <v-list-item-title v-bind="props">{{
-              item.title
-            }}</v-list-item-title></v-list-item
-          >
-          <v-list-item
-            v-else
-            :to="item.route"
-            :prepend-icon="item.icon"
-            :link="true"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title></v-list-item
-          >
-        </template>
-        <v-list v-if="item.subItems">
-          <v-list-item
-            v-for="(subItem, index) in item.subItems"
-            :key="index"
-            @click="changRoute(subItem.route)"
-          >
-            <v-list-item-title>{{ subItem.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <v-list>
+        <v-list-group v-for="item in items" :value="item.title">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-if="!item.subItems"
+              v-bind="props"
+              :prepend-icon="item.icon"
+              :append-icon="null"
+              :title="item.title"
+              @click="changRoute(item.route)"
+            ></v-list-item>
+
+            <v-list-item
+              v-else
+              v-bind="props"
+              :prepend-icon="item.icon"
+              :title="item.title"
+            ></v-list-item>
+          </template>
+
+          <v-list-group v-for="subItem in item.subItems" :value="subItem.title">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                @click="changRoute(subItem.route)"
+                v-bind="props"
+                :append-icon="null"
+                :title="subItem.title"
+              ></v-list-item>
+            </template>
+          </v-list-group>
+        </v-list-group>
+      </v-list>
+
+      <v-divider></v-divider>
 
       <div class="d-flex align-center justify-space-between flex-column py-5">
         <div class="d-flex">
@@ -121,7 +125,7 @@ export default {
         },
         {
           icon: "mdi-database-outline",
-          title: "Dữ liệu đầu vào",
+          title: "Dữ liệu",
           show: true,
           subItems: [
             {
