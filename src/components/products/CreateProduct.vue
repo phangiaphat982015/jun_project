@@ -78,10 +78,11 @@
             <v-col cols="6">
               <v-file-input
                 @change="previewImage"
-                accept="image/*"
                 label="Hình ảnh"
-                prepend-icon="mdi-camera"
-                variant="outlined"
+                :prepend-icon="null"
+                @click:clear="clearUploadImage"
+                accept="image/*"
+                :model-value="currentImage"
               ></v-file-input>
               <div
                 class="image-preview"
@@ -114,6 +115,7 @@ export default {
       itemId: null,
       categories: [],
       units: [],
+      currentImage: null,
     };
   },
 
@@ -122,12 +124,32 @@ export default {
     this.initData();
     this.getCategories();
     this.getUnits();
+    this.createCurrentImage();
   },
 
   methods: {
+    createCurrentImage() {
+      if (this.editedItem.imageData && this.editedItem.imageName) {
+        this.currentImage = [
+          new File([this.editedItem.imageData], this.editedItem.imageName, {
+            type: "image/*",
+          }),
+        ];
+      }
+    },
+
+    clearUploadImage() {
+      this.editedItem.imageData = "";
+      this.editedItem.imageName = "";
+    },
+
     previewImage: function (event) {
       var input = event.target;
       if (input.files && input.files[0]) {
+        var file = input.files[0];
+        var fileName = file.name;
+        this.editedItem.imageName = fileName;
+
         var reader = new FileReader();
         reader.onload = (e) => {
           this.editedItem.imageData = e.target.result;

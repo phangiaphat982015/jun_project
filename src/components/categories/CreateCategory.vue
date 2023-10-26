@@ -43,16 +43,17 @@
             <v-col cols="6">
               <v-file-input
                 @change="previewImage"
-                accept="image/*"
                 label="Hình ảnh"
-                prepend-icon="mdi-camera"
-                variant="outlined"
+                :prepend-icon="null"
+                @click:clear="clearUploadImage"
+                accept="image/*"
+                :model-value="currentImage"
               ></v-file-input>
               <div
                 class="image-preview"
                 v-if="editedItem.imageData?.length > 0"
               >
-                <img class="preview" :src="editedItem.imageData" />
+                <img class="preview" :src="editedItem.imageData ?? ''" />
               </div>
             </v-col>
           </v-row>
@@ -73,11 +74,10 @@
 export default {
   data() {
     return {
-      editedItem: {
-        imageData: "",
-      },
+      editedItem: {},
       itemId: null,
       categories: [],
+      currentImage: null,
     };
   },
 
@@ -85,12 +85,32 @@ export default {
     this.itemId = this.$route.params.id;
     this.initData();
     this.getCategories();
+    this.createCurrentImage();
   },
 
   methods: {
+    createCurrentImage() {
+      if (this.editedItem.imageData && this.editedItem.imageName) {
+        this.currentImage = [
+          new File([this.editedItem.imageData], this.editedItem.imageName, {
+            type: "image/*",
+          }),
+        ];
+      }
+    },
+
+    clearUploadImage() {
+      this.editedItem.imageData = "";
+      this.editedItem.imageName = "";
+    },
+
     previewImage: function (event) {
       var input = event.target;
       if (input.files && input.files[0]) {
+        var file = input.files[0];
+        var fileName = file.name;
+        this.editedItem.imageName = fileName;
+
         var reader = new FileReader();
         reader.onload = (e) => {
           this.editedItem.imageData = e.target.result;
@@ -135,9 +155,8 @@ export default {
   width: 400px;
 }
 img.preview {
-  width: 50%;
+  width: 100%;
   height: 350px;
-  padding: 5px;
   object-fit: cover;
 }
 </style>
