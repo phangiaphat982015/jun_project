@@ -66,12 +66,29 @@
                 variant="outlined"
               ></v-select>
             </v-col>
+
             <v-col cols="12">
               <v-textarea
                 v-model="editedItem.description"
                 label="Mô tả"
                 variant="outlined"
               ></v-textarea>
+            </v-col>
+
+            <v-col cols="6">
+              <v-file-input
+                @change="previewImage"
+                accept="image/*"
+                label="Hình ảnh"
+                prepend-icon="mdi-camera"
+                variant="outlined"
+              ></v-file-input>
+              <div
+                class="image-preview"
+                v-if="editedItem.imageData?.length > 0"
+              >
+                <img class="preview" :src="editedItem.imageData" />
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -91,7 +108,9 @@
 export default {
   data() {
     return {
-      editedItem: {},
+      editedItem: {
+        imageData: "",
+      },
       itemId: null,
       categories: [],
       units: [],
@@ -106,6 +125,17 @@ export default {
   },
 
   methods: {
+    previewImage: function (event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.editedItem.imageData = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
     getCategories() {
       this.categories = this.$store.getters.categoryList;
     },
@@ -144,5 +174,12 @@ export default {
 <style scoped>
 .search-text-field {
   width: 400px;
+}
+
+img.preview {
+  width: 50%;
+  height: 350px;
+  padding: 5px;
+  object-fit: cover;
 }
 </style>
