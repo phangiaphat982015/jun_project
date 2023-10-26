@@ -52,6 +52,13 @@
               </v-icon>
             </div>
           </template>
+
+          <template v-slot:item.status="{ item }">
+            <v-chip v-if="item.status" color="green darken-2"
+              >Đang hoạt động</v-chip
+            >
+            <v-chip v-else color="red darken-2">Ngưng hoạt động</v-chip>
+          </template>
         </v-data-table>
       </v-card>
     </v-main></v-app
@@ -79,7 +86,10 @@ export default {
       search: "",
       headers: [
         { title: "Mã bảng giá", key: "id" },
-        { title: "Giá", key: "price" },
+        { title: "Tên bảng giá", key: "name" },
+        { title: "Ngày bắt đầu", key: "startDate" },
+        { title: "Ngày kết thúc", key: "endDate" },
+        { title: "Trạng thái", key: "status" },
         { title: "Mô tả", key: "description" },
         { title: "Tuỳ chọn", key: "actions" },
       ],

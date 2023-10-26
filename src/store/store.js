@@ -186,18 +186,7 @@ const store = createStore({
       ],
 
       // Price list
-      priceList: [
-        {
-          id: "BANGGIA1",
-          price: "100000",
-          description: "BANGGIA1",
-        },
-        {
-          id: "BANGGIA2",
-          price: "200000",
-          description: "BANGGIA2",
-        },
-      ],
+      priceList: [],
 
       // Product
       productList: [
