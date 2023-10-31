@@ -92,9 +92,19 @@
     </v-navigation-drawer>
     <v-main> <router-view /></v-main>
   </v-app>
+  <v-snackbar v-model="snackbar" :timeout="2000">
+    {{ snackbarText }}
+
+    <template v-slot:actions>
+      <v-btn color="blue" variant="text" @click="snackbar = false">
+        Đóng
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 <script>
 import { useCookies } from "vue3-cookies";
+import axios from "@/axios";
 
 export default {
   setup() {
@@ -112,6 +122,8 @@ export default {
     isLoggedIn: false,
     username: "",
     password: "",
+    snackbar: false,
+    snackbarText: "",
   }),
 
   computed: {
@@ -185,7 +197,7 @@ export default {
   },
 
   mounted() {
-    let authenCookie = this.cookies.get("authenCookie");
+    let authenCookie = localStorage.getItem("authToken");
     if (authenCookie) {
       this.isLoggedIn = true;
       this.$router.push("/dashboard");
@@ -205,17 +217,30 @@ export default {
     },
 
     login() {
-      if (this.username === "admin" && this.password === "admin") {
-        this.cookies.set("authenCookie", "logged in");
-        this.isLoggedIn = true;
-        this.username = "";
-        this.password = "";
-        this.$router.push("/dashboard");
-      }
+      axios
+        .post("/auth/login", {
+          account: this.username,
+          password: this.password,
+        })
+        .then((respone) => {
+          if (respone.data.payload !== null) {
+            localStorage.setItem("authToken", respone.data.payload.token);
+            this.isLoggedIn = true;
+            this.username = "";
+            this.password = "";
+            this.$router.push("/dashboard");
+          } else {
+            this.snackbarText = respone.data.message;
+            this.snackbar = true;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     logout() {
-      this.cookies.remove("authenCookie");
+      localStorage.removeItem("authToken");
       this.isLoggedIn = false;
       this.$router.push("/");
     },
