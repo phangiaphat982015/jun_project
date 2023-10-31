@@ -16,15 +16,15 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="editedItem.name"
-                label="Tên đơn vị"
+                v-model="editedItem.id"
+                label="Mã đơn vị"
                 variant="outlined"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-textarea
-                v-model="editedItem.description"
-                label="Mô tả"
+                v-model="editedItem.value"
+                label="Tên đơn vị"
                 variant="outlined"
               ></v-textarea>
             </v-col>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import axios from "@/axios";
+
 export default {
   data() {
     return {
@@ -59,7 +61,14 @@ export default {
   methods: {
     initData() {
       if (this.itemId) {
-        this.editedItem = this.$store.getters.getUnitById(this.itemId);
+        axios
+          .get(`/base_unit_of_measure/${this.itemId}`)
+          .then((response) => {
+            this.editedItem = response.data.payload;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
 
@@ -68,17 +77,27 @@ export default {
     },
 
     saveItem(item) {
-      const id = item.id;
-
-      if (id) {
-        this.$store.commit("editUnit", item);
+      if (this.itemId) {
+        axios
+          .put(`/base_unit_of_measure/${this.itemId}`, item)
+          .then((response) => {
+            this.editedItem = {};
+            this.$router.push({ name: "units" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
-        this.$store.commit("addUnit", item);
+        axios
+          .post(`/base_unit_of_measure/`, item)
+          .then((response) => {
+            this.editedItem = {};
+            this.$router.push({ name: "units" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-
-      this.editedItem = {};
-
-      this.$router.push({ name: "units" });
     },
   },
 };

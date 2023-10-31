@@ -32,7 +32,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="getUnits"
+          :items="units"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -60,6 +60,7 @@
 
 <script>
 import { VDataTable } from "vuetify/labs/VDataTable";
+import axios from "@/axios";
 
 export default {
   name: "Units",
@@ -68,10 +69,8 @@ export default {
     VDataTable,
   },
 
-  computed: {
-    getUnits() {
-      return this.$store.getters.unitList;
-    },
+  created() {
+    this.fetchData();
   },
 
   data() {
@@ -79,16 +78,27 @@ export default {
       search: "",
       headers: [
         { title: "Mã đơn vị", key: "id" },
-        { title: "Tên đơn vị", key: "name" },
-        { title: "Mô tả", key: "description" },
+        { title: "Tên đơn vị", key: "value" },
         { title: "Tuỳ chọn", key: "actions" },
       ],
       dialog: false,
       editedItem: {},
+      units: [],
     };
   },
 
   methods: {
+    fetchData() {
+      axios
+        .get("/base_unit_of_measure/")
+        .then((response) => {
+          this.units = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     create() {
       this.$router.push({ name: "create_unit" });
     },
@@ -102,7 +112,14 @@ export default {
 
     deleteItem(item) {
       if (confirm("Bạn có thực sự muốn xoá?")) {
-        this.$store.commit("deleteUnit", item.id);
+        axios
+          .delete(`/base_unit_of_measure/${item.id}`)
+          .then((response) => {
+            this.fetchData();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
