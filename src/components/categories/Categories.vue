@@ -122,7 +122,14 @@ export default {
 
     deleteItem(item) {
       if (confirm("Bạn có thực sự muốn xoá?")) {
-        this.$store.commit("deleteCategory", item.id);
+        axios
+          .delete(`/structure_value/category/${item.id}`)
+          .then((response) => {
+            this.fetchData();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
