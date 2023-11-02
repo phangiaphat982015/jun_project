@@ -19,6 +19,7 @@
                 v-model="editedItem.id"
                 label="Mã đơn vị"
                 variant="outlined"
+                :disabled="itemId"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -79,7 +80,7 @@ export default {
     saveItem(item) {
       if (this.itemId) {
         axios
-          .put(`/base_unit_of_measure/${this.itemId}`, item)
+          .put(`/base_unit_of_measure/`, item)
           .then((response) => {
             this.editedItem = {};
             this.$router.push({ name: "units" });
