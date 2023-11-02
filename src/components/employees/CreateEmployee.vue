@@ -16,22 +16,44 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="editedItem.name"
+                v-model="editedItem.id"
+                label="Mã nhân viên"
+                variant="outlined"
+                :disabled="itemId"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.lastName"
                 label="Tên"
                 variant="outlined"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
-                v-model="editedItem.position"
-                label="Chức vụ"
+                v-model="editedItem.firstName"
+                label="Họ"
                 variant="outlined"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
-                v-model="editedItem.phone"
+                v-model="editedItem.dayOfBirth"
+                label="Ngày sinh"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.phoneNumber"
                 label="Số điện thoại"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.email"
+                label="Email"
                 variant="outlined"
               ></v-text-field>
             </v-col>
@@ -50,6 +72,8 @@
 </template>
 
 <script>
+import axios from "@/axios";
+
 export default {
   data() {
     return {
@@ -66,7 +90,14 @@ export default {
   methods: {
     initData() {
       if (this.itemId) {
-        this.editedItem = this.$store.getters.getEmployeeById(this.itemId);
+        axios
+          .get(`/user/${this.itemId}`)
+          .then((response) => {
+            this.editedItem = response.data.payload;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
 
