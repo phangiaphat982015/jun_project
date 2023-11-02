@@ -13,10 +13,10 @@
             <v-list-item>
               <h2 class="font-weight-light">Vị trí địa lý</h2>
             </v-list-item>
-            <v-btn color="primary" dark class="-3" @click="create">
+            <!-- <v-btn color="primary" dark class="-3" @click="create">
               Tạo mới
               <v-icon small>mdi-plus-circle-outline</v-icon>
-            </v-btn>
+            </v-btn> -->
           </div>
           <div class="d-flex">
             <v-text-field
@@ -32,7 +32,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="getLocations"
+          :items="locations"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -60,6 +60,7 @@
 
 <script>
 import { VDataTable } from "vuetify/labs/VDataTable";
+import axios from "@/axios";
 
 export default {
   name: "Employees",
@@ -68,28 +69,38 @@ export default {
     VDataTable,
   },
 
-  computed: {
-    getLocations() {
-      return this.$store.getters.locationList;
-    },
+  created() {
+    this.fetchData();
   },
 
   data() {
     return {
       search: "",
       headers: [
-        { title: "Số thứ tự", key: "id" },
-        { title: "Thành phố / Tỉnh", key: "city" },
-        { title: "Quận / Huyện", key: "district" },
-        { title: "Phường / Xã", key: "ward" },
-        { title: "Tuỳ chọn", key: "actions" },
+        { title: "Mã", key: "id" },
+        { title: "Thành phố / Tỉnh", key: "value1" },
+        { title: "Quận / Huyện", key: "value2" },
+        { title: "Phường / Xã", key: "value3" },
+        // { title: "Tuỳ chọn", key: "actions" },
       ],
       dialog: false,
       editedItem: {},
+      locations: [],
     };
   },
 
   methods: {
+    fetchData() {
+      axios
+        .get("/structure_value/address")
+        .then((response) => {
+          this.locations = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     create() {
       this.$router.push({ name: "create_location" });
     },
