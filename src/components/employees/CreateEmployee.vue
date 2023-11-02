@@ -48,12 +48,30 @@
                 v-model="editedItem.password"
                 label="Mật khẩu"
                 variant="outlined"
+                type="password"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
+                v-model="editedItem.addressDetail"
+                label="Chi tiết địa chỉ"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-select
+                label="Địa chỉ"
+                v-model="editedItem.address"
+                :items="locations"
+                item-title="id"
+                item-value="id"
+                variant="outlined"
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
                 v-model="editedItem.dayOfBirth"
-                label="Ngày sinh"
+                label="Ngày sinh (YYYY-MM-DD)"
                 variant="outlined"
               ></v-text-field>
             </v-col>
@@ -62,6 +80,23 @@
                 v-model="editedItem.phoneNumber"
                 label="Số điện thoại"
                 variant="outlined"
+                type="number"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.gender"
+                label="Giới tính"
+                variant="outlined"
+                type="number"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.type"
+                label="Loại"
+                variant="outlined"
+                type="number"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -93,6 +128,7 @@ export default {
     return {
       editedItem: {},
       itemId: null,
+      locations: [],
     };
   },
 
@@ -113,6 +149,15 @@ export default {
             console.log(err);
           });
       }
+
+      axios
+        .get("/structure_value/address")
+        .then((response) => {
+          this.locations = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     cancel() {
@@ -125,18 +170,29 @@ export default {
         firstName: item.firstName,
         lastName: item.lastName,
         loginName: item.loginName,
-        password: item.password ?? "123456",
+        password: item.password,
         phoneNumber: item.phoneNumber,
         addressDetail: item.addressDetail,
-        type: item.type,
+        type: Number(item.type),
         dayOfBirth: item.dayOfBirth,
         email: item.email,
-        gender: item.gender,
-        address: item.address.id,
+        gender: Number(item.gender),
+        address: item.address,
       };
+
       if (this.itemId) {
         axios
           .put(`/user/`, object)
+          .then((response) => {
+            this.editedItem = {};
+            this.$router.push({ name: "employees" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        axios
+          .post(`/auth/register`, object)
           .then((response) => {
             this.editedItem = {};
             this.$router.push({ name: "employees" });
