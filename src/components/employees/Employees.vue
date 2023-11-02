@@ -32,7 +32,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="getEmployees"
+          :items="users"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -47,9 +47,9 @@
               >
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="deleteItem(item)" color="pink">
+              <!-- <v-icon small @click="deleteItem(item)" color="pink">
                 mdi-delete
-              </v-icon>
+              </v-icon> -->
             </div>
           </template>
         </v-data-table>
@@ -60,6 +60,7 @@
 
 <script>
 import { VDataTable } from "vuetify/labs/VDataTable";
+import axios from "@/axios";
 
 export default {
   name: "Employees",
@@ -68,10 +69,8 @@ export default {
     VDataTable,
   },
 
-  computed: {
-    getEmployees() {
-      return this.$store.getters.employeeList;
-    },
+  created() {
+    this.fetchData();
   },
 
   data() {
@@ -79,17 +78,31 @@ export default {
       search: "",
       headers: [
         { title: "Mã nhân viên", key: "id" },
-        { title: "Tên", key: "name" },
-        { title: "Chức vụ", key: "position" },
-        { title: "Số điện thoại", key: "phone" },
+        { title: "Tên", key: "lastName" },
+        { title: "Họ", key: "firstName" },
+        { title: "Ngày sinh", key: "dayOfBirth" },
+        { title: "Số điện thoại", key: "phoneNumber" },
+        { title: "Email", key: "email" },
         { title: "Tuỳ chọn", key: "actions" },
       ],
       dialog: false,
       editedItem: {},
+      users: [],
     };
   },
 
   methods: {
+    fetchData() {
+      axios
+        .get("/user/")
+        .then((response) => {
+          this.users = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     create() {
       this.$router.push({ name: "create_employee" });
     },
