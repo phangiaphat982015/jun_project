@@ -38,6 +38,20 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                v-model="editedItem.loginName"
+                label="Tên đăng nhập"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="editedItem.password"
+                label="Mật khẩu"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
                 v-model="editedItem.dayOfBirth"
                 label="Ngày sinh"
                 variant="outlined"
@@ -106,17 +120,31 @@ export default {
     },
 
     saveItem(item) {
-      const id = item.id;
-
-      if (id) {
-        this.$store.commit("editEmployee", item);
-      } else {
-        this.$store.commit("addEmployee", item);
+      var object = {
+        id: item.id,
+        firstName: item.firstName,
+        lastName: item.lastName,
+        loginName: item.loginName,
+        password: item.password ?? "123456",
+        phoneNumber: item.phoneNumber,
+        addressDetail: item.addressDetail,
+        type: item.type,
+        dayOfBirth: item.dayOfBirth,
+        email: item.email,
+        gender: item.gender,
+        address: item.address.id,
+      };
+      if (this.itemId) {
+        axios
+          .put(`/user/`, object)
+          .then((response) => {
+            this.editedItem = {};
+            this.$router.push({ name: "employees" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-
-      this.editedItem = {};
-
-      this.$router.push({ name: "employees" });
     },
   },
 };
