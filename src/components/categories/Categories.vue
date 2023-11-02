@@ -32,7 +32,7 @@
       <v-card class="mx-7">
         <v-data-table
           :headers="headers"
-          :items="getCategories"
+          :items="categories"
           mobile-breakpoint="800"
           class="elevation-0 py-3"
           :search="search"
@@ -52,14 +52,17 @@
               </v-icon>
             </div>
           </template>
+          <template v-slot:item.imageUrl="{ item }">
+            <v-img :src="item.imageUrl"></v-img>
+          </template>
         </v-data-table>
-      </v-card>
-    </v-main></v-app
-  >
+      </v-card> </v-main
+  ></v-app>
 </template>
 
 <script>
 import { VDataTable } from "vuetify/labs/VDataTable";
+import axios from "@/axios";
 
 export default {
   name: "Employees",
@@ -74,21 +77,38 @@ export default {
     },
   },
 
+  created() {
+    this.fetchData();
+  },
+
   data() {
     return {
       search: "",
       headers: [
-        { title: "Số thứ tự", key: "id" },
-        { title: "Mã", key: "code" },
-        { title: "Tên", key: "name" },
+        { title: "Mã thể loại", key: "id" },
+        { title: "Link hình", key: "imageUrl" },
+        { title: "Mô tả", key: "description" },
+        { title: "Tên", key: "value" },
         { title: "Tuỳ chọn", key: "actions" },
       ],
       dialog: false,
       editedItem: {},
+      categories: [],
     };
   },
 
   methods: {
+    fetchData() {
+      axios
+        .get("/structure_value/category/")
+        .then((response) => {
+          this.categories = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     create() {
       this.$router.push({ name: "create_category" });
     },
