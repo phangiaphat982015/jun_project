@@ -28,7 +28,6 @@
                     v-model="editedItem.startDate"
                     label="Ngày bắt đầu"
                     variant="outlined"
-                    :disabled="true"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -36,7 +35,6 @@
                     v-model="editedItem.endDate"
                     label="Ngày kết thúc"
                     variant="outlined"
-                    :disabled="true"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -83,10 +81,13 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            :disabled="editedItem.status ?? true"
-            color="green darken-1"
+            color="red darken-1"
+            v-if="editedItem.status"
             text
-            @click="active(editedItem)"
+            @click="deactive(editedItem)"
+            >Ngưng kích hoạt</v-btn
+          >
+          <v-btn v-else color="green darken-1" text @click="active(editedItem)"
             >Kích hoạt</v-btn
           >
           <v-btn color="blue darken-1" text @click="cancel">Huỷ</v-btn>
@@ -163,19 +164,6 @@ export default {
       if (id) {
         this.$store.commit("editPriceList", item);
       } else {
-        item.status = true;
-
-        const date = new Date();
-
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-
-        let currentDate = `${day}-${month}-${year}`;
-
-        item.startDate = currentDate;
-
-        this.deactivePricelists();
         this.$store.commit("addPriceList", item);
       }
 
@@ -185,20 +173,7 @@ export default {
     },
 
     active(item) {
-      this.deactivePricelists();
-
       item.status = true;
-
-      const date = new Date();
-
-      let day = date.getDate();
-      let month = date.getMonth() + 1;
-      let year = date.getFullYear();
-
-      let currentDate = `${day}-${month}-${year}`;
-
-      item.startDate = currentDate;
-      item.endDate = "";
 
       this.$store.commit("editPriceList", item);
 
@@ -207,24 +182,14 @@ export default {
       this.$router.push({ name: "price-list" });
     },
 
-    deactivePricelists() {
-      const priceList = this.$store.getters.priceList;
+    deactive(item) {
+      item.status = false;
 
-      priceList.map((priceList) => {
-        priceList.status = false;
+      this.$store.commit("editPriceList", item);
 
-        const date = new Date();
+      this.editedItem = {};
 
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-
-        let currentDate = `${day}-${month}-${year}`;
-
-        priceList.endDate = currentDate;
-
-        this.$store.commit("editPriceList", priceList);
-      });
+      this.$router.push({ name: "price-list" });
     },
   },
 };
