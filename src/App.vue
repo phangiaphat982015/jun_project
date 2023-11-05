@@ -90,7 +90,7 @@
         </div>
       </div>
     </v-navigation-drawer>
-    <v-main> <router-view /></v-main>
+    <v-main> <router-view :key="$route.fullPath" /></v-main>
   </v-app>
   <v-snackbar v-model="snackbar" :timeout="2000">
     {{ snackbarText }}

@@ -100,7 +100,7 @@ export default {
   methods: {
     fetchData() {
       axios
-        .get("/structure_value/category/")
+        .get("/structure_value/category/level/0")
         .then((response) => {
           this.categories = response.data.payload;
         })

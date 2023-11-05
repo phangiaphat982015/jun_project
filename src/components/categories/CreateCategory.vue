@@ -61,6 +61,36 @@
             </v-col>
           </v-row>
         </v-card-text>
+        <v-card-title v-if="subCategories.length > 0">
+          <span>Loại sản phẩm trực thuộc</span>
+        </v-card-title>
+        <v-data-table
+          v-if="subCategories.length > 0"
+          :headers="headers"
+          :items="subCategories"
+          mobile-breakpoint="800"
+          class="elevation-0 py-3"
+          :search="search"
+        >
+          <template v-slot:item.actions="{ item }">
+            <div class="text-truncate">
+              <v-icon
+                small
+                class="mr-2"
+                @click="showEditDialog(item)"
+                color="primary"
+              >
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)" color="pink">
+                mdi-delete
+              </v-icon>
+            </div>
+          </template>
+          <template v-slot:item.imageUrl="{ item }">
+            <v-img :src="item.imageUrl"></v-img>
+          </template>
+        </v-data-table>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="cancel">Huỷ</v-btn>
@@ -78,11 +108,16 @@
 </template>
 
 <script>
+import { VDataTable } from "vuetify/labs/VDataTable";
 import axios from "@/axios";
 import { storage } from "@/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default {
+  components: {
+    VDataTable,
+  },
+
   data() {
     return {
       editedItem: {},
@@ -90,6 +125,14 @@ export default {
       categories: [],
       currentImage: null,
       loading: false,
+      search: "",
+      headers: [
+        { title: "Mã thể loại", key: "id" },
+        { title: "Link hình", key: "imageUrl" },
+        { title: "Tên", key: "value" },
+        { title: "Tuỳ chọn", key: "actions" },
+      ],
+      subCategories: [],
     };
   },
 
@@ -98,9 +141,21 @@ export default {
     this.initData();
     this.getCategories();
     this.createCurrentImage();
+    this.getSubcategories();
   },
 
   methods: {
+    getSubcategories() {
+      axios
+        .get(`/structure_value/category/parent_id/${this.itemId}`)
+        .then((response) => {
+          this.subCategories = response.data.payload;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     async upload(imageName, imageData) {
       const storageRef = ref(storage, `seashop/${imageName}`);
 
@@ -182,11 +237,16 @@ export default {
     async saveItem(item) {
       this.loading = true;
       await this.upload(item.imageName, item.imageFile);
+
+      const level = await this.getLevel(item.parent);
+
+      console.log(level);
+
       const payload = {
         id: item.id,
         value: item.value,
         description: item.description,
-        level: 0,
+        level: level,
         parentId: item.parent,
         imageUrl: this.editedItem.imageUrl,
       };
@@ -214,6 +274,51 @@ export default {
       }
 
       this.loading = false;
+    },
+
+    showEditDialog(item) {
+      this.$router.push({
+        name: "edit_category",
+        params: { id: item.id },
+      });
+    },
+
+    deleteItem(item) {
+      if (confirm("Bạn có thực sự muốn xoá?")) {
+        axios
+          .delete(`/structure_value/category/${item.id}`)
+          .then((response) => {
+            this.$router.push({
+              name: "categories",
+              params: { id: item.id },
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+
+    async getLevel(parentId) {
+      var parent = null;
+      if (!parentId) {
+        return 0;
+      } else {
+        axios
+          .get(`/structure_value/category/get_parents/${parentId}`)
+          .then((response) => {
+            parent = response.data.payload?.parent;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        if (parent) {
+          return 2;
+        } else {
+          return 1;
+        }
+      }
     },
   },
 };
